@@ -55,4 +55,4 @@ jobs:
           app-name: 'GarageClientAPI'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D47F1C191B8E4A42AA48FD814F36C4D2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2606B0EBFAE8414E8F2FD75496EA2144 }}
