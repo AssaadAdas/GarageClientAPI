@@ -29,7 +29,7 @@ public partial class ClientPaymentMethod
 
     public string Cvv { get; set; } = null!;
 
-    public virtual ClientProfile Client { get; set; } = null!;
+    public virtual ClientProfile? Client { get; set; } = null!;
 
     public virtual ICollection<ClientPaymentOrder> ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
 }

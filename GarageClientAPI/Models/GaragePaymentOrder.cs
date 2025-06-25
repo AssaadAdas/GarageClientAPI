@@ -29,5 +29,7 @@ public partial class GaragePaymentOrder
 
     public virtual GarageProfile Garage { get; set; } = null!;
 
+    public virtual GaragePaymentMethod PaymentMethod { get; set; } = null!;
+
     public virtual PremiumOffer PremiumOffer { get; set; } = null!;
 }

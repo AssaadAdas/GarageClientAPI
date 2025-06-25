@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using GarageClientAPI.Data;
+using GarageClientAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarageClientAPI.Data;
-using GarageClientAPI.Models;
 
 namespace GarageClientAPI.Controllers
 {
@@ -62,7 +62,7 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<IEnumerable<ClientNotification>>> GetUnreadNotifications(int clientId)
         {
             return await _context.ClientNotifications
-                .Where(cn => cn.Clientid == clientId && cn.IsRead == false)//&& !cn.IsRead // Uncomment if you add IsRead field
+                .Where(cn => cn.Clientid == clientId && cn.IsRead==false ) // Uncomment if you add IsRead field
                 .OrderByDescending(cn => cn.Id)
                 .ToListAsync();
         }

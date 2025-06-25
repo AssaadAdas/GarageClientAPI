@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using GarageClientAPI.Data;
+using GarageClientAPI.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarageClientAPI.Data;
-using GarageClientAPI.Models;
 
 namespace GarageClientAPI.Controllers
 {
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class VehiclesRefuelsController : ControllerBase
@@ -106,25 +108,25 @@ namespace GarageClientAPI.Controllers
                 return BadRequest("Invalid Vehicle ID");
             }
 
-            // Set default odometer if not provided
-            if (!vehiclesRefuel.Ododmeter.HasValue)
-            {
-                var vehicle = await _context.Vehicles.FindAsync(vehiclesRefuel.Vehicleid);
-                vehiclesRefuel.Ododmeter = vehicle?.Odometer;
-            }
+            //// Set default odometer if not provided
+            //if (!vehiclesRefuel.Ododmeter.HasValue)
+            //{
+            //    var vehicle = await _context.Vehicles.FindAsync(vehiclesRefuel.Vehicleid);
+            //    vehiclesRefuel.Ododmeter = vehicle.Odometer;
+            //}
 
             _context.VehiclesRefuels.Add(vehiclesRefuel);
             await _context.SaveChangesAsync();
 
             // Update vehicle odometer if current refuel odometer is higher
             var vehicleToUpdate = await _context.Vehicles.FindAsync(vehiclesRefuel.Vehicleid);
-            if (vehicleToUpdate != null &&
-                vehiclesRefuel.Ododmeter.HasValue &&
-                vehiclesRefuel.Ododmeter > vehicleToUpdate.Odometer)
-            {
-                vehicleToUpdate.Odometer = vehiclesRefuel.Ododmeter.Value;
-                await _context.SaveChangesAsync();
-            }
+            //if (vehicleToUpdate != null &&
+            //    vehiclesRefuel.Ododmeter.HasValue &&
+            //    vehiclesRefuel.Ododmeter > vehicleToUpdate.Odometer)
+            //{
+            //    vehicleToUpdate.Odometer = vehiclesRefuel.Ododmeter.Value;
+            //    await _context.SaveChangesAsync();
+            //}
 
             return CreatedAtAction("GetVehiclesRefuel", new { id = vehiclesRefuel.Id }, vehiclesRefuel);
         }

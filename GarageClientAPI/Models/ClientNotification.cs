@@ -13,5 +13,5 @@ public partial class ClientNotification
 
     public bool? IsRead { get; set; }
 
-    public virtual ClientProfile Client { get; set; } = null!;
+    public virtual ClientProfile? Client { get; set; } = null!;
 }

@@ -13,5 +13,5 @@ public partial class ClientReminder
 
     public string? Notes { get; set; }
 
-    public virtual ClientProfile Client { get; set; } = null!;
+    public virtual ClientProfile? Client { get; set; } = null!;
 }

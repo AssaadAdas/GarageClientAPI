@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarageClientAPI.Data;
-using GarageClientAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Configuration;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using GarageClientAPI.Data;
+using GarageClientAPI.Models;
 
 namespace GarageClientAPI.Controllers
 {
+    
 
     [Route("api/[controller]")]
     [ApiController]
@@ -54,14 +56,21 @@ namespace GarageClientAPI.Controllers
             }
 
             // Hash password
-            user.Password = HashPassword(user.Password);
+            //user.Password = HashPassword(user.Password);
 
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
+            var Result = await _context.SaveChangesAsync();
+            if (Result > 0)
+            {
+                user.Password = null;
+                return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            }
+            else
+            {
+                return BadRequest();
+            }
             // Don't return password hash
-            user.Password = null;
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+
         }
 
         // POST: api/Users/login
@@ -79,21 +88,20 @@ namespace GarageClientAPI.Controllers
             }
 
             // Generate JWT token
-            var token = GenerateJwtToken(user);
+            //var token = GenerateJwtToken(user);
 
             // Don't return password hash
             user.Password = null;
 
             return Ok(new
             {
-                Token = token,
+                //Token = token,
                 User = user
             });
         }
 
         // GET: api/Users
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             var users = await _context.Users
@@ -103,6 +111,22 @@ namespace GarageClientAPI.Controllers
             // Don't return password hashes
             users.ForEach(u => u.Password = null);
             return users;
+        }
+
+        // GET: api/Users/GetUserByUserName/username
+        [HttpGet("GetUserByUserName/{username}")]
+        public async Task<ActionResult<User>> GetUserByUserName(string username)
+        {
+            var user = await _context.Users
+                .Include(u => u.UserType)
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            user.Password = null;
+            return user;
         }
 
         // GET: api/Users/5
@@ -294,7 +318,7 @@ namespace GarageClientAPI.Controllers
 
         private bool VerifyPassword(string password, string storedHash)
         {
-            var computedHash = HashPassword(password);
+            var computedHash = password;// HashPassword(password);
             return computedHash == storedHash;
         }
 

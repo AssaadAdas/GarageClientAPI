@@ -25,17 +25,19 @@ public partial class ClientProfile
 
     public bool IsPremium { get; set; }
 
-    public virtual ICollection<ClientNotification> ClientNotifications { get; set; } = new List<ClientNotification>();
+    public virtual ICollection<ClientNotification>? ClientNotifications { get; set; } = new List<ClientNotification>();
 
-    public virtual ICollection<ClientPaymentMethod> ClientPaymentMethods { get; set; } = new List<ClientPaymentMethod>();
+    public virtual ICollection<ClientPaymentMethod>? ClientPaymentMethods { get; set; } = new List<ClientPaymentMethod>();
 
-    public virtual ICollection<ClientPremiumRegistration> ClientPremiumRegistrations { get; set; } = new List<ClientPremiumRegistration>();
+    public virtual ICollection<ClientPaymentOrder>? ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
 
-    public virtual ICollection<ClientReminder> ClientReminders { get; set; } = new List<ClientReminder>();
+    public virtual ICollection<ClientPremiumRegistration>? ClientPremiumRegistrations { get; set; } = new List<ClientPremiumRegistration>();
 
-    public virtual Country Country { get; set; } = null!;
+    public virtual ICollection<ClientReminder>? ClientReminders { get; set; } = new List<ClientReminder>();
 
-    public virtual User User { get; set; } = null!;
+    public virtual Country? Country { get; set; } = null!;
 
-    public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+    public virtual User? User { get; set; } = null!;
+
+    public virtual ICollection<Vehicle>? Vehicles { get; set; } = new List<Vehicle>();
 }

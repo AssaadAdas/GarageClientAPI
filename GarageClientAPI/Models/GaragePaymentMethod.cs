@@ -30,4 +30,6 @@ public partial class GaragePaymentMethod
     public string Cvv { get; set; } = null!;
 
     public virtual GarageProfile Garage { get; set; } = null!;
+
+    public virtual ICollection<GaragePaymentOrder> GaragePaymentOrders { get; set; } = new List<GaragePaymentOrder>();
 }

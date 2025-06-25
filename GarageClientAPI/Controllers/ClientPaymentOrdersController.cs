@@ -1,15 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using GarageClientAPI.Data;
 using GarageClientAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GarageClientAPI.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ClientPaymentOrdersController : ControllerBase
@@ -26,6 +34,7 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<IEnumerable<ClientPaymentOrder>>> GetClientPaymentOrders()
         {
             return await _context.ClientPaymentOrders
+                .Include(o => o.PaymentMethod)
                 .Include(o => o.Client)
                 .Include(o => o.Curr)
                 .Include(o => o.PremiumOffer)
@@ -37,7 +46,8 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<ClientPaymentOrder>> GetClientPaymentOrder(int id)
         {
             var clientPaymentOrder = await _context.ClientPaymentOrders
-                .Include(o => o.Client)
+                .Include(o => o.PaymentMethod)
+                 .Include(o => o.Client)
                 .Include(o => o.Curr)
                 .Include(o => o.PremiumOffer)
                 .FirstOrDefaultAsync(o => o.Id == id);
@@ -56,6 +66,7 @@ namespace GarageClientAPI.Controllers
         {
             return await _context.ClientPaymentOrders
                 .Where(o => o.ClientId == clientId)
+                .Include(o => o.PaymentMethod)
                 .Include(o => o.Client)
                 .Include(o => o.Curr)
                 .Include(o => o.PremiumOffer)
@@ -69,6 +80,8 @@ namespace GarageClientAPI.Controllers
         {
             return await _context.ClientPaymentOrders
                 .Where(o => o.Status == status)
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.Client)
                 .Include(o => o.Client)
                 .Include(o => o.Curr)
                 .Include(o => o.PremiumOffer)
@@ -82,6 +95,7 @@ namespace GarageClientAPI.Controllers
         {
             return await _context.ClientPaymentOrders
                 .Where(o => o.PaymentMethodId == paymentMethodId)
+                .Include(o => o.PaymentMethod)
                 .Include(o => o.Client)
                 .Include(o => o.Curr)
                 .Include(o => o.PremiumOffer)

@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using GarageClientAPI.Data;
+using GarageClientAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarageClientAPI.Data;
-using GarageClientAPI.Models;
 
 namespace GarageClientAPI.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class ClientProfilesController : ControllerBase
@@ -46,6 +45,28 @@ namespace GarageClientAPI.Controllers
                 .Include(c => c.ClientNotifications)
                 .Include(c => c.ClientReminders)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (clientProfile == null)
+            {
+                return NotFound();
+            }
+
+            return clientProfile;
+        }
+
+        // GET: api/ClientProfiles/GetClientProfileByUserID/5
+        [HttpGet("GetClientProfileByUserID/{userid}")]
+        public async Task<ActionResult<ClientProfile>> GetClientProfileByUserID(int userid)
+        {
+            var clientProfile = await _context.ClientProfiles
+                .Include(c => c.Country)
+                .Include(c => c.User)
+                .Include(c => c.ClientPremiumRegistrations)
+                .Include(c => c.ClientPaymentMethods)
+                .Include(c => c.Vehicles)
+                .Include(c => c.ClientNotifications)
+                .Include(c => c.ClientReminders)
+                .FirstOrDefaultAsync(c => c.User.Id == userid);
 
             if (clientProfile == null)
             {

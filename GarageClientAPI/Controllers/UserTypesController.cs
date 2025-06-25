@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using GarageClientAPI.Data;
+using GarageClientAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using GarageClientAPI.Data;
-using GarageClientAPI.Models;
 
 namespace GarageClientAPI.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserTypesController : ControllerBase
@@ -35,8 +35,8 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<UserType>> GetUserType(int id)
         {
             var userType = await _context.UserTypes
-                .Include(ut => ut.Users)
-                .Include(ut => ut.PremiumOffers)
+                //.Include(ut => ut.Users)
+                //.Include(ut => ut.PremiumOffers)
                 .FirstOrDefaultAsync(ut => ut.Id == id);
 
             if (userType == null)

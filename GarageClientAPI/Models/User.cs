@@ -13,9 +13,9 @@ public partial class User
 
     public int UserTypeid { get; set; }
 
-    public virtual ICollection<ClientProfile> ClientProfiles { get; set; } = new List<ClientProfile>();
+    public virtual ICollection<ClientProfile>? ClientProfiles { get; set; } = new List<ClientProfile>();
 
-    public virtual ICollection<GarageProfile> GarageProfiles { get; set; } = new List<GarageProfile>();
+    public virtual ICollection<GarageProfile>? GarageProfiles { get; set; } = new List<GarageProfile>();
 
-    public virtual UserType UserType { get; set; } = null!;
+    public virtual UserType? UserType { get; set; } = null!;
 }
