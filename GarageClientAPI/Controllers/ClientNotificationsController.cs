@@ -27,6 +27,7 @@ namespace GarageClientAPI.Controllers
         {
             return await _context.ClientNotifications
                 .Include(cn => cn.Client)
+                .OrderByDescending(cn => cn.IsRead)
                 .OrderByDescending(cn => cn.Id)
                 .ToListAsync();
         }
