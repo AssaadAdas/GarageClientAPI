@@ -26,9 +26,9 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<IEnumerable<VehiclesService>>> GetVehiclesServices()
         {
             return await _context.VehiclesServices
-                .Include(vs => vs.Garage)
-                .Include(vs => vs.Vehicle)
-                .Include(vs => vs.VehiclesServiceTypes)
+                //.Include(vs => vs.Garage)
+                //.Include(vs => vs.Vehicle)
+                //.Include(vs => vs.VehiclesServiceTypes)
                 .ToListAsync();
         }
 
@@ -37,9 +37,9 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<VehiclesService>> GetVehiclesService(int id)
         {
             var vehiclesService = await _context.VehiclesServices
-                .Include(vs => vs.Garage)
-                .Include(vs => vs.Vehicle)
-                .Include(vs => vs.VehiclesServiceTypes)
+                //.Include(vs => vs.Garage)
+                //.Include(vs => vs.Vehicle)
+                //.Include(vs => vs.VehiclesServiceTypes)
                 .FirstOrDefaultAsync(vs => vs.Id == id);
 
             if (vehiclesService == null)
@@ -84,6 +84,29 @@ namespace GarageClientAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<VehiclesService>> PostVehiclesService(VehiclesService vehiclesService)
         {
+            // Validate the model
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Check if vehicle exists
+            var vehicleExists = await _context.Vehicles.AnyAsync(v => v.Id == vehiclesService.Vehicleid);
+            if (!vehicleExists)
+            {
+                return NotFound($"Vehicle with ID {vehiclesService.Vehicleid} not found.");
+            }
+
+            // Check if garage exists
+            var garageExists = await _context.GarageProfiles.AnyAsync(g => g.Id == vehiclesService.Garageid);
+            if (!garageExists)
+            {
+                return NotFound($"Garage with ID {vehiclesService.Garageid} not found.");
+            }
+
+            // Set default values if needed
+            
+
             _context.VehiclesServices.Add(vehiclesService);
             await _context.SaveChangesAsync();
 

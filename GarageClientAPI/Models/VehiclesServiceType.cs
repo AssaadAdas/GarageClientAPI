@@ -15,9 +15,9 @@ public partial class VehiclesServiceType
 
     public string? Notes { get; set; }
 
-    public virtual Currency Curr { get; set; } = null!;
+    public virtual Currency? Curr { get; set; } = null!;
 
-    public virtual ServiceType ServiceType { get; set; } = null!;
+    public virtual ServiceType? ServiceType { get; set; } = null!;
 
-    public virtual VehiclesService VehicleService { get; set; } = null!;
+    public virtual VehiclesService? VehicleService { get; set; } = null!;
 }

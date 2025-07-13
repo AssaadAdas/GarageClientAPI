@@ -19,9 +19,9 @@ public partial class VehiclesService
 
     public int Garageid { get; set; }
 
-    public virtual GarageProfile Garage { get; set; } = null!;
+    public virtual GarageProfile? Garage { get; set; } = null!;
 
-    public virtual Vehicle Vehicle { get; set; } = null!;
+    public virtual Vehicle? Vehicle { get; set; } = null!;
 
-    public virtual ICollection<VehiclesServiceType> VehiclesServiceTypes { get; set; } = new List<VehiclesServiceType>();
+    public virtual ICollection<VehiclesServiceType>? VehiclesServiceTypes { get; set; } = new List<VehiclesServiceType>();
 }

@@ -548,9 +548,6 @@ public partial class GarageClientContext : DbContext
 
         modelBuilder.Entity<VehiclesService>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_CarServices");
-
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Notes).HasMaxLength(200);
             entity.Property(e => e.ServiceDate).HasColumnType("datetime");
             entity.Property(e => e.ServiceLocation)
