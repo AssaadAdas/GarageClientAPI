@@ -17,5 +17,5 @@ public partial class VehiclesRefuel
 
     public DateTime RefuleDate { get; set; }
 
-    public virtual Vehicle Vehicle { get; set; } = null!;
+    public virtual Vehicle? Vehicle { get; set; } = null!;
 }
