@@ -290,11 +290,11 @@ namespace GarageClientAPI.Controllers
         }
 
         // GET: api/Vehicles/5/history
-        [HttpGet("{id}/history")]
+        [HttpGet("GetVehicleHistory/{id}")]
         public async Task<ActionResult<object>> GetVehicleHistory(int id)
         {
-            var vehicle = await _context.Vehicles.FindAsync(id);
-            if (vehicle == null)
+            var vehicles = await _context.Vehicles.FindAsync(id);
+            if (vehicles == null)
             {
                 return NotFound();
             }
@@ -302,16 +302,25 @@ namespace GarageClientAPI.Controllers
             return new
             {
                 Appointments = await _context.VehicleAppointments
+                    .Include(va => va.Vehicle)
                     .Where(va => va.Vehicleid == id)
                     .OrderByDescending(va => va.AppointmentDate)
                     .ToListAsync(),
                 Checks = await _context.VehicleChecks
                     .Where(vc => vc.Vehicleid == id)
+                    .OrderByDescending(vs => vs.Id)
                     .ToListAsync(),
                 Refuels = await _context.VehiclesRefuels
+                    .Include(vr => vr.Vehicle)
                     .Where(vr => vr.Vehicleid == id)
+                    .OrderByDescending(vs => vs.RefuleDate)
                     .ToListAsync(),
                 Services = await _context.VehiclesServices
+                    .Include(vc => vc.Vehicle)
+                    .Include(vc => vc.VehiclesServiceTypes)
+                      .ThenInclude(vst => vst.ServiceType )
+                      
+                    .Include(vc => vc.Garage)
                     .Where(vs => vs.Vehicleid == id)
                     .OrderByDescending(vs => vs.ServiceDate)
                     .ToListAsync()
