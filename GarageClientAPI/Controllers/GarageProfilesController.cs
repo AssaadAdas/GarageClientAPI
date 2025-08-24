@@ -34,6 +34,24 @@ namespace GarageClientAPI.Controllers
                 .ToListAsync();
         }
 
+        // GET: api/ClientProfiles/GetClientProfileByUserID/5
+        [HttpGet("GetGarageProfileByUserID/{userid}")]
+        public async Task<ActionResult<GarageProfile>> GetGarageProfileByUserID(int userid)
+        {
+            var GarageProfile = await _context.GarageProfiles
+                .Include(c => c.Country)
+                .Include(c => c.User)
+                .Include(c => c.GaragePremiumRegistrations)
+                .Include(c => c.GaragePaymentMethods)
+                .FirstOrDefaultAsync(c => c.User.Id == userid);
+
+            if (GarageProfile == null)
+            {
+                return NotFound();
+            }
+
+            return GarageProfile;
+        }
         // GET: api/GarageProfiles/5
         [HttpGet("{id}")]
         public async Task<ActionResult<GarageProfile>> GetGarageProfile(int id)

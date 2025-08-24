@@ -15,5 +15,5 @@ public partial class GaragePremiumRegistration
 
     public bool IsActive { get; set; }
 
-    public virtual GarageProfile Garage { get; set; } = null!;
+    public virtual GarageProfile? Garage { get; set; } = null!;
 }
