@@ -11,5 +11,9 @@ public partial class VehicleCheck
 
     public string? CheckStatus { get; set; }
 
+    public DateTime?  CheckDate { get; set; }
+
+    public int? GarageId { get; set; }
     public virtual Vehicle? Vehicle { get; set; }
+    public virtual GarageProfile? GarageProfile { get; set; }
 }

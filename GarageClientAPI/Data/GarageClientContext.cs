@@ -520,6 +520,10 @@ public partial class GarageClientContext : DbContext
             entity.HasOne(d => d.Vehicle).WithMany(p => p.VehicleChecks)
                 .HasForeignKey(d => d.Vehicleid)
                 .HasConstraintName("FK_CarChecks_Vehicles");
+
+            entity.HasOne(d => d.GarageProfile).WithMany(p => p.VehicleChecks)
+                .HasForeignKey(d => d.GarageId)
+                .HasConstraintName("FK_VehicleChecks_GarageProfiles");
         });
 
         modelBuilder.Entity<VehicleType>(entity =>

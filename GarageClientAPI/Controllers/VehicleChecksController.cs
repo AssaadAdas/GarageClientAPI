@@ -88,7 +88,7 @@ namespace GarageClientAPI.Controllers
             // Set default status if not provided
             if (string.IsNullOrEmpty(vehicleCheck.CheckStatus))
             {
-                vehicleCheck.CheckStatus = "Pending";
+                vehicleCheck.CheckStatus = "pnd";
             }
 
             _context.VehicleChecks.Add(vehicleCheck);
