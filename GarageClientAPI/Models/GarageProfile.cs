@@ -39,4 +39,5 @@ public partial class GarageProfile
 
     public virtual ICollection<VehiclesService>? VehiclesServices { get; set; } = new List<VehiclesService>();
     public virtual ICollection<VehicleCheck>? VehicleChecks { get; set; } = new List<VehicleCheck>();
+    public virtual ICollection<VehicleAppointment>? VehicleAppointments { get; set; } = new List<VehicleAppointment>();
 }

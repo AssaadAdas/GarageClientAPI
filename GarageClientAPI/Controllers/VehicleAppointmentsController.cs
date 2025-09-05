@@ -38,6 +38,7 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<VehicleAppointment>> GetVehicleAppointment(int id)
         {
             var vehicleAppointment = await _context.VehicleAppointments
+                .Include(va => va.Garage)
                 .Include(va => va.Vehicle)
                     .ThenInclude(v => v.Client)
                 .FirstOrDefaultAsync(va => va.Id == id);
@@ -56,7 +57,22 @@ namespace GarageClientAPI.Controllers
         {
             return await _context.VehicleAppointments
                 .Where(va => va.Vehicleid == vehicleId)
+                .Include(va => va.Garage)
                 .Include(va => va.Vehicle)
+                  .ThenInclude(v => v.Client)
+                .OrderByDescending(va => va.AppointmentDate)
+                .ToListAsync();
+        }
+
+        // GET: api/VehicleAppointments/Garage/5
+        [HttpGet("Garage/{garageId}")]
+        public async Task<ActionResult<IEnumerable<VehicleAppointment>>> GetAppointmentsByGarage(int garageId)
+        {
+            return await _context.VehicleAppointments
+                .Where(va => va.Garageid == garageId)
+                .Include(va => va.Garage)
+                .Include(va => va.Vehicle)
+                  .ThenInclude(v => v.Client)
                 .OrderByDescending(va => va.AppointmentDate)
                 .ToListAsync();
         }

@@ -506,6 +506,12 @@ public partial class GarageClientContext : DbContext
                 .HasForeignKey(d => d.Vehicleid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_VehicleAppointment_Vehicles");
+
+            entity.HasOne(d => d.Garage).WithMany(p => p.VehicleAppointments)
+                  .HasForeignKey(d => d.Garageid)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_VehicleAppointment_GarageProfiles");
+
         });
 
         modelBuilder.Entity<VehicleCheck>(entity =>

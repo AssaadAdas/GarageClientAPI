@@ -64,6 +64,11 @@ namespace GarageClientAPI.Controllers
                 .Include(g => g.GaragePaymentOrders)
                 .Include(g => g.GaragePremiumRegistrations)
                 .Include(g => g.VehiclesServices)
+                .ThenInclude(vs=> vs.Vehicle)
+                .ThenInclude(v=>v.Client)
+                .Include(g => g.VehicleAppointments)
+                .ThenInclude(va => va.Vehicle)
+                .ThenInclude(v => v.Client)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (garageProfile == null)
