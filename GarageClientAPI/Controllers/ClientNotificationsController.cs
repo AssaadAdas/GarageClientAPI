@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using GarageClientAPI.Data;
+﻿using GarageClientAPI.Data;
 using GarageClientAPI.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace GarageClientAPI.Controllers
                 .Take(20)
                 .ToListAsync();
         }
-
+        
         // POST: api/ClientNotifications
         [HttpPost]
         public async Task<ActionResult<ClientNotification>> PostClientNotification(ClientNotification notification)
