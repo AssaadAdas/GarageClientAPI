@@ -78,12 +78,13 @@ namespace GarageClientAPI.Controllers
         }
 
         // GET: api/VehicleAppointments/upcoming
-        [HttpGet("upcoming")]
-        public async Task<ActionResult<IEnumerable<VehicleAppointment>>> GetUpcomingAppointments()
+        [HttpGet("upcoming/{garageId}")]
+        public async Task<ActionResult<IEnumerable<VehicleAppointment>>> GetUpcomingAppointments(int garageId)
         {
             var today = DateTime.Today;
             return await _context.VehicleAppointments
                 .Where(va => va.AppointmentDate >= today)
+                .Where(va => va.Garageid == garageId)
                 .Include(va => va.Vehicle)
                     .ThenInclude(v => v.Client)
                 .OrderBy(va => va.AppointmentDate)
