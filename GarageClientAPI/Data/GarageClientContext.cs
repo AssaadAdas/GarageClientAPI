@@ -405,6 +405,11 @@ public partial class GarageClientContext : DbContext
                 .HasForeignKey(d => d.ServiceTypesid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ServicesTypeSetUp_ServiceTypes");
+
+            entity.HasOne(d => d.Vehicle).WithMany(p => p.ServicesTypeSetUps)
+                .HasForeignKey(d => d.Vehicleid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ServicesTypeSetUp_Vehicles");
         });
 
         modelBuilder.Entity<Specialization>(entity =>

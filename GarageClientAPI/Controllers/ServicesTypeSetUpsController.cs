@@ -64,6 +64,18 @@ namespace GarageClientAPI.Controllers
                 .ToListAsync();
         }
 
+        // GET: api/ServicesTypeSetUps/Vehicle/5
+        [HttpGet("Vehicle/{Vehicleid}")]
+        public async Task<ActionResult<IEnumerable<ServicesTypeSetUp>>> GetSetupsByVehicle(int Vehicleid)
+        {
+            return await _context.ServicesTypeSetUps
+                .Where(s => s.Vehicleid == Vehicleid)
+                //.Include(s => s.MeassureUnit)
+                //.Include(s => s.Vehicle)
+                .OrderBy(s => s.ServiceTypesValue)
+                .ToListAsync();
+        }
+
         // GET: api/ServicesTypeSetUps/unit/3
         [HttpGet("unit/{measureUnitId}")]
         public async Task<ActionResult<IEnumerable<ServicesTypeSetUp>>> GetSetupsByMeasureUnit(int measureUnitId)
@@ -100,6 +112,7 @@ namespace GarageClientAPI.Controllers
             // Validate unique combination of ServiceTypesid and ServiceTypesValue
             if (await _context.ServicesTypeSetUps.AnyAsync(s =>
                 s.ServiceTypesid == servicesTypeSetUp.ServiceTypesid &&
+                s.Vehicleid == servicesTypeSetUp.Vehicleid &&
                 s.ServiceTypesValue == servicesTypeSetUp.ServiceTypesValue))
             {
                 return Conflict("A setup with this service type and value already exists");
@@ -124,6 +137,7 @@ namespace GarageClientAPI.Controllers
             if (await _context.ServicesTypeSetUps.AnyAsync(s =>
                 s.Id != id &&
                 s.ServiceTypesid == servicesTypeSetUp.ServiceTypesid &&
+                s.Vehicleid == servicesTypeSetUp.Vehicleid &&
                 s.ServiceTypesValue == servicesTypeSetUp.ServiceTypesValue))
             {
                 return Conflict("A setup with this service type and value already exists");

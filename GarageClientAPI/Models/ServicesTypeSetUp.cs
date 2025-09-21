@@ -13,7 +13,11 @@ public partial class ServicesTypeSetUp
 
     public int MeassureUnitid { get; set; }
 
-    public virtual MeassureUnit MeassureUnit { get; set; } = null!;
+    public int Vehicleid { get; set; }
 
-    public virtual ServiceType ServiceTypes { get; set; } = null!;
+    public virtual MeassureUnit? MeassureUnit { get; set; } = null!;
+
+    public virtual ServiceType? ServiceTypes { get; set; } = null!;
+
+    public virtual Vehicle? Vehicle { get; set; } = null!;
 }

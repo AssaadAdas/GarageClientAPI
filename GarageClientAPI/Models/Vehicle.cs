@@ -39,6 +39,8 @@ public partial class Vehicle
 
     public virtual MeassureUnit? MeassureUnit { get; set; } = null!;
 
+    public virtual ICollection<ServicesTypeSetUp>? ServicesTypeSetUps { get; set; } = new List<ServicesTypeSetUp>();
+
     public virtual ICollection<VehicleAppointment>? VehicleAppointments { get; set; } = new List<VehicleAppointment>();
 
     public virtual ICollection<VehicleCheck>? VehicleChecks { get; set; } = new List<VehicleCheck>();
