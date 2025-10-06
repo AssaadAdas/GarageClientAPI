@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using GarageClientAPI.Data;
+﻿using GarageClientAPI.Data;
 using GarageClientAPI.Models;
-
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -325,6 +325,23 @@ namespace GarageClientAPI.Controllers
                     .OrderByDescending(vs => vs.ServiceDate)
                     .ToListAsync()
             };
+        }
+
+        [HttpGet("GetVehicleServicesHistory/{VehicleID}")]
+        public async Task<ActionResult<bool>> GetVehicleServicesHistory(int VehicleID,int CurrentOdometer)
+        {
+            var vehicles = await _context.Vehicles.FindAsync(VehicleID);
+            if (vehicles == null)
+            {
+                return NotFound();
+            }
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC CheckRemainingServices @VehicleID, @CurrentOdometer",
+                new SqlParameter("@VehicleID", VehicleID),
+                new SqlParameter("@CurrentOdometer", CurrentOdometer)
+            );
+            return true;
         }
     }
 }

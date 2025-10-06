@@ -58,6 +58,22 @@ namespace GarageClientAPI.Controllers
                 .OrderByDescending(cn => cn.Id)
                 .ToListAsync();
         }
+        // GET: api/ClientNotifications/ByClient/5
+        [HttpGet("UnReadByClient/{clientId}")]
+        public async Task<ActionResult<IEnumerable<ClientNotification>>> GetClientUnReadNotificationsByClient(int clientId)
+        {
+            if (clientId <= 0)
+            {
+                return BadRequest("Invalid client ID");
+            }
+
+            var notifications = await _context.ClientNotifications
+                .Where(cn => cn.Clientid == clientId && cn.IsRead == false)
+                .OrderByDescending(cn => cn.Id)
+                .ToListAsync();
+
+            return notifications;
+        }
 
         // GET: api/ClientNotifications/Unread/5
         [HttpGet("Unread/{clientId}")]
