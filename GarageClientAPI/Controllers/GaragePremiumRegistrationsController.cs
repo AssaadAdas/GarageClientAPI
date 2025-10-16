@@ -66,6 +66,24 @@ namespace GarageClientAPI.Controllers
                 .Include(r => r.Garage)
                 .ToListAsync();
         }
+        [HttpGet("activeGarage/{garageId}")]
+        public async Task<ActionResult<GaragePremiumRegistration>> GetActiveRegistrationByGarageID(int garageId)
+        {
+            var now = DateTime.Now;
+
+            var activeRegistration = await _context.GaragePremiumRegistrations
+                .Include(r => r.Garage)
+                .Where(r => r.IsActive && r.ExpiryDate >= now && r.Garageid == garageId)
+                .OrderByDescending(r => r.ExpiryDate) // optional: latest active registration first
+                .FirstOrDefaultAsync();
+
+            if (activeRegistration == null)
+            {
+                return NotFound(); // return 404 if no active registration found
+            }
+
+            return Ok(activeRegistration);
+        }
 
         // POST: api/GaragePremiumRegistrations
         [HttpPost]
