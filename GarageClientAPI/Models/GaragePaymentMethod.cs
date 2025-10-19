@@ -9,7 +9,7 @@ public partial class GaragePaymentMethod
 
     public int Garageid { get; set; }
 
-    public string PaymentType { get; set; } = null!;
+    public int PaymentTypeId { get; set; }
 
     public bool IsPrimary { get; set; }
 
@@ -29,7 +29,6 @@ public partial class GaragePaymentMethod
 
     public string Cvv { get; set; } = null!;
 
+    public virtual PaymentType? PaymentType { get; set; } = null!;
     public virtual GarageProfile? Garage { get; set; } = null!;
-
-    public virtual ICollection<GaragePaymentOrder>? GaragePaymentOrders { get; set; } = new List<GaragePaymentOrder>();
 }

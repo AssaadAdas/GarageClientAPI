@@ -48,6 +48,11 @@ public partial class GarageClientContext : DbContext
 
     public virtual DbSet<PremiumOffer> PremiumOffers { get; set; }
 
+    public virtual DbSet<PaymentType> PaymentTypes { get; set; }
+
+    //public DbSet<GaragePaymentMethod> GaragePaymentMethods { get; set; }
+    //public DbSet<PaymentType> PaymentTypes { get; set; }
+
     public virtual DbSet<ServiceType> ServiceTypes { get; set; }
 
     public virtual DbSet<ServicesTypeSetUp> ServicesTypeSetUps { get; set; }
@@ -253,13 +258,31 @@ public partial class GarageClientContext : DbContext
                 .HasColumnName("CVV");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.LastModified).HasColumnType("datetime");
-            entity.Property(e => e.PaymentType).HasMaxLength(50);
 
             entity.HasOne(d => d.Garage).WithMany(p => p.GaragePaymentMethods)
                 .HasForeignKey(d => d.Garageid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_GaragePaymentMethods_GarageProfiles");
+
+            entity.HasOne(d => d.PaymentType).WithMany(p => p.GaragePaymentMethods)
+                  .HasForeignKey(d => d.PaymentTypeId)
+                  .OnDelete(DeleteBehavior.ClientSetNull)
+                  .HasConstraintName("FK_GaragePaymentMethods_PaymentType");
+
         });
+
+
+        modelBuilder.Entity<PaymentType>(entity =>
+        {
+            entity.ToTable("PaymentType");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.PaymentTypeDesc)
+                .HasMaxLength(50)
+                .HasColumnName("PaymentTypeDesc");
+        });
+
+
 
         modelBuilder.Entity<GaragePaymentOrder>(entity =>
         {
