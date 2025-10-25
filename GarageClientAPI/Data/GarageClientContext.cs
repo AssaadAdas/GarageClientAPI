@@ -160,9 +160,7 @@ public partial class GarageClientContext : DbContext
         {
             entity.ToTable("ClientPremiumRegistration");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
             entity.Property(e => e.Registerdate).HasColumnType("datetime");
 

@@ -54,6 +54,22 @@ namespace GarageClientAPI.Controllers
             return clientProfile;
         }
 
+        // PATCH: api/Clientrofiles/5/premium-status
+        [HttpPatch("{id}/premium-status")]
+        public async Task<IActionResult> UpdatePremiumStatus(int id, [FromBody] bool isPremium)
+        {
+            var Client = await _context.ClientProfiles.FindAsync(id);
+            if (Client == null)
+            {
+                return NotFound();
+            }
+
+            Client.IsPremium = isPremium;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
         // GET: api/ClientProfiles/GetClientProfileByUserID/5
         [HttpGet("GetClientProfileByUserID/{userid}")]
         public async Task<ActionResult<ClientProfile>> GetClientProfileByUserID(int userid)

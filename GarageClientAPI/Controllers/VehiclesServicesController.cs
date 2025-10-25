@@ -128,7 +128,26 @@ namespace GarageClientAPI.Controllers
 
             return NoContent();
         }
+        // GET: api/VehiclesServices/vehicle/{vehicleId}/last
+        [HttpGet("vehicle/{vehicleId}/last")]
+        public async Task<ActionResult<VehiclesService>> GetLastVehiclesServiceByVehicleId(int vehicleId)
+        {
+            var lastService = await _context.VehiclesServices
+                .Include(vs => vs.VehiclesServiceTypes)
+                 .ThenInclude(navigationPropertyPath: vst => vst.ServiceType)
+                .Include(vs => vs.Garage)
+                .Include(navigationPropertyPath: vs => vs.Vehicle)
+                .Where(vs => vs.Vehicleid == vehicleId)
+                .OrderByDescending(vs => vs.ServiceDate)
+                .FirstOrDefaultAsync();
 
+            if (lastService == null)
+            {
+                return NotFound();
+            }
+
+            return lastService;
+        }
         private bool VehiclesServiceExists(int id)
         {
             return _context.VehiclesServices.Any(e => e.Id == id);
