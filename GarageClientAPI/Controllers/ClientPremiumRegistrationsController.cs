@@ -65,6 +65,24 @@ namespace GarageClientAPI.Controllers
                 .ToListAsync();
         }
 
+        [HttpGet("activeClient/{ClientId}")]
+        public async Task<ActionResult<GaragePremiumRegistration>> GetActiveRegistrationByGarageID(int ClientId)
+        {
+            var now = DateTime.Now;
+
+            var activeRegistration = await _context.ClientPremiumRegistrations
+                .Include(r => r.Client)
+                .Where(r => r.IsActive && r.ExpiryDate >= now && r.Clientid == ClientId)
+                .OrderByDescending(r => r.ExpiryDate) // optional: latest active registration first
+                .FirstOrDefaultAsync();
+
+            if (activeRegistration == null)
+            {
+                return NotFound(); // return 404 if no active registration found
+            }
+
+            return Ok(activeRegistration);
+        }
         // PUT: api/ClientPremiumRegistrations/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClientPremiumRegistration(int id, ClientPremiumRegistration clientPremiumRegistration)
@@ -103,6 +121,16 @@ namespace GarageClientAPI.Controllers
             if (clientPremiumRegistration.Registerdate == default)
             {
                 clientPremiumRegistration.Registerdate = DateTime.Now;
+            }
+
+            // Deactivate any other active registrations for this garage
+            var existingActive = await _context.ClientPremiumRegistrations
+                .Where(r => r.Clientid == clientPremiumRegistration.Clientid && r.IsActive)
+                .ToListAsync();
+
+            foreach (var activeReg in existingActive)
+            {
+                activeReg.IsActive = false;
             }
 
             _context.ClientPremiumRegistrations.Add(clientPremiumRegistration);

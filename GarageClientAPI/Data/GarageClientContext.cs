@@ -116,12 +116,17 @@ public partial class GarageClientContext : DbContext
                 .HasColumnName("CVV");
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.LastModified).HasColumnType("datetime");
-            entity.Property(e => e.PaymentType).HasMaxLength(50);
+            entity.Property(e => e.PaymentTypeId);
 
             entity.HasOne(d => d.Client).WithMany(p => p.ClientPaymentMethods)
                 .HasForeignKey(d => d.Clientid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ClientPaymentMethods_ClientProfiles");
+
+            entity.HasOne(d => d.PaymentType).WithMany(p => p.ClientPaymentMethods)
+                   .HasForeignKey(d => d.PaymentTypeId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .HasConstraintName("FK_ClientPaymentMethods_PaymentType");
         });
 
         modelBuilder.Entity<ClientPaymentOrder>(entity =>

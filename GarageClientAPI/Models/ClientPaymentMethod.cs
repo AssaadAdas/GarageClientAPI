@@ -9,7 +9,7 @@ public partial class ClientPaymentMethod
 
     public int Clientid { get; set; }
 
-    public string PaymentType { get; set; } = null!;
+    public int PaymentTypeId { get; set; }
 
     public bool IsPrimary { get; set; }
 
@@ -31,5 +31,7 @@ public partial class ClientPaymentMethod
 
     public virtual ClientProfile? Client { get; set; } = null!;
 
-    public virtual ICollection<ClientPaymentOrder> ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
+    public virtual PaymentType? PaymentType { get; set; } = null!;
+
+    public virtual ICollection<ClientPaymentOrder>? ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
 }
