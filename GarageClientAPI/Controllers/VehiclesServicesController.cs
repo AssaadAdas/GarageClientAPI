@@ -133,10 +133,13 @@ namespace GarageClientAPI.Controllers
         public async Task<ActionResult<VehiclesService>> GetLastVehiclesServiceByVehicleId(int vehicleId)
         {
             var lastService = await _context.VehiclesServices
+                // include the collection then include each related navigation separately
                 .Include(vs => vs.VehiclesServiceTypes)
-                 .ThenInclude(navigationPropertyPath: vst => vst.ServiceType)
+                    .ThenInclude(vst => vst.ServiceType)
+                .Include(vs => vs.VehiclesServiceTypes)
+                    .ThenInclude(vst => vst.Curr)
                 .Include(vs => vs.Garage)
-                .Include(navigationPropertyPath: vs => vs.Vehicle)
+                .Include(vs => vs.Vehicle)
                 .Where(vs => vs.Vehicleid == vehicleId)
                 .OrderByDescending(vs => vs.ServiceDate)
                 .FirstOrDefaultAsync();

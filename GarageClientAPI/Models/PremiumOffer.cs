@@ -15,6 +15,8 @@ public partial class PremiumOffer
 
     public int CurrId { get; set; }
 
+    public int PremiumRange { get; set; }
+
     public virtual ICollection<ClientPaymentOrder> ClientPaymentOrders { get; set; } = new List<ClientPaymentOrder>();
 
     public virtual Currency Curr { get; set; } = null!;

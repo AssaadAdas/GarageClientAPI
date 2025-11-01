@@ -73,7 +73,18 @@ namespace GarageClientAPI.Controllers
                 .OrderByDescending(o => o.CreatedDate)
                 .ToListAsync();
         }
-
+        [HttpGet("clientStatus/{clientId}")]
+        public async Task<ActionResult<IEnumerable<ClientPaymentOrder>>> GetPendingOrdersByClient(int clientId)
+        {
+            return await _context.ClientPaymentOrders
+                .Where(o => o.ClientId == clientId && o.Status == "Pending")
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.Client)
+                .Include(o => o.Curr)
+                .Include(o => o.PremiumOffer)
+                .OrderByDescending(o => o.CreatedDate)
+                .ToListAsync();
+        }
         // GET: api/ClientPaymentOrders/status/{status}
         [HttpGet("status/{status}")]
         public async Task<ActionResult<IEnumerable<ClientPaymentOrder>>> GetOrdersByStatus(string status)
