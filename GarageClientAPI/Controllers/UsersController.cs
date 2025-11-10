@@ -88,7 +88,7 @@ namespace GarageClientAPI.Controllers
             }
 
             // Generate JWT token
-            //var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(user);
 
             // Don't return password hash
             user.Password = null;
