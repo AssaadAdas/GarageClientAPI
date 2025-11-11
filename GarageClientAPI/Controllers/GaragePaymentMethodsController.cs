@@ -80,7 +80,7 @@ namespace GarageClientAPI.Controllers
             {
                 paymentMethod.Id,
                 paymentMethod.Garageid,
-                paymentMethod.PaymentType,
+                paymentMethod.PaymentTypeId,
                 paymentMethod.IsPrimary,
                 paymentMethod.CreatedDate,
                 paymentMethod.LastModified,
