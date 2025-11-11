@@ -89,6 +89,7 @@ namespace GarageClientAPI.Controllers
                 paymentMethod.CardHolderName,
                 paymentMethod.ExpiryMonth,
                 paymentMethod.ExpiryYear,
+                paymentMethod.Cvv,
                 Garage = paymentMethod.Garage
             };
 
@@ -117,6 +118,7 @@ namespace GarageClientAPI.Controllers
                 m.CardHolderName,
                 m.ExpiryMonth,
                 m.ExpiryYear,
+                m.Cvv,
                 Garage = m.Garage
             });
 
