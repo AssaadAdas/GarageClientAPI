@@ -62,7 +62,38 @@ namespace GarageClientAPI.Controllers
 
             return Ok(response);
         }
+        // GET: api/GaragePaymentMethods/5
+        [HttpGet("UnMask/{id}")]
+        public async Task<ActionResult<GaragePaymentMethod>> GetGaragePaymentMethodUnMask(int id)
+        {
+            var paymentMethod = await _context.GaragePaymentMethods
+                .Include(p => p.Garage)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
+            if (paymentMethod == null)
+            {
+                return NotFound();
+            }
+
+            // Mask sensitive card details in response
+            var response = new
+            {
+                paymentMethod.Id,
+                paymentMethod.Garageid,
+                paymentMethod.PaymentType,
+                paymentMethod.IsPrimary,
+                paymentMethod.CreatedDate,
+                paymentMethod.LastModified,
+                paymentMethod.IsActive,
+                CardNumber = paymentMethod.CardNumber,
+                paymentMethod.CardHolderName,
+                paymentMethod.ExpiryMonth,
+                paymentMethod.ExpiryYear,
+                Garage = paymentMethod.Garage
+            };
+
+            return Ok(response);
+        }
         // GET: api/GaragePaymentMethods/garage/5
         [HttpGet("garage/{garageId}")]
         public async Task<ActionResult<IEnumerable<GaragePaymentMethod>>> GetPaymentMethodsByGarage(int garageId)

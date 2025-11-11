@@ -66,6 +66,40 @@ namespace GarageClientAPI.Controllers
             return Ok(response);
         }
 
+        [HttpGet("UnMask/{id}")]
+        public async Task<ActionResult<ClientPaymentMethod>> GetClientPaymentUnMaskMethod(int id)
+        {
+            var clientPaymentMethod = await _context.ClientPaymentMethods
+                .Include(c => c.Client)
+                .Include(c => c.ClientPaymentOrders)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (clientPaymentMethod == null)
+            {
+                return NotFound();
+            }
+
+            // Mask sensitive card details in response
+            var response = new
+            {
+                clientPaymentMethod.Id,
+                clientPaymentMethod.Clientid,
+                clientPaymentMethod.PaymentType,
+                clientPaymentMethod.IsPrimary,
+                clientPaymentMethod.CreatedDate,
+                clientPaymentMethod.LastModified,
+                clientPaymentMethod.IsActive,
+                CardNumber = clientPaymentMethod.CardNumber,
+                clientPaymentMethod.CardHolderName,
+                clientPaymentMethod.ExpiryMonth,
+                clientPaymentMethod.ExpiryYear,
+                clientPaymentMethod.Cvv,
+                Client = clientPaymentMethod.Client,
+                ClientPaymentOrders = clientPaymentMethod.ClientPaymentOrders
+            };
+
+            return Ok(response);
+        }
         // GET: api/ClientPaymentMethods/client/5
         [HttpGet("client/{clientId}")]
         public async Task<ActionResult<IEnumerable<ClientPaymentMethod>>> GetPaymentMethodsByClient(int clientId)
