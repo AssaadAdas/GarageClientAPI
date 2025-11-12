@@ -25,6 +25,8 @@ public partial class GarageProfile
 
     public bool IsPremium { get; set; }
 
+    public string? GarageLocation { get; set; }
+
     public virtual Country? Country { get; set; } = null!;
 
     public virtual ICollection<GaragePaymentMethod>? GaragePaymentMethods { get; set; } = new List<GaragePaymentMethod>();
