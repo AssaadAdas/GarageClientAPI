@@ -95,7 +95,7 @@ namespace GarageClientAPI.Controllers
 
             return Ok(new
             {
-                //Token = token,
+                Token = token,
                 User = user
             });
         }
@@ -250,11 +250,12 @@ namespace GarageClientAPI.Controllers
 
         // PATCH: api/Users/5/password
         [HttpPatch("{id}/password")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> ChangePassword(int id, [FromBody] PasswordChangeRequest request)
         {
             // Only allow the user themselves to change password
-            var currentUserId = int.Parse(User.FindFirst("id").Value);
+            var users = await _context.Users.FindAsync(id);
+            var currentUserId = users.Id;
             if (currentUserId != id)
             {
                 return Forbid();
@@ -273,7 +274,7 @@ namespace GarageClientAPI.Controllers
             }
 
             // Update password
-            user.Password = HashPassword(request.NewPassword);
+            user.Password = request.NewPassword;
             await _context.SaveChangesAsync();
 
             return NoContent();

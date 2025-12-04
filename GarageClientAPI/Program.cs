@@ -19,6 +19,7 @@ builder.Services.AddControllers()
     });
 
 // JWT config - required for [Authorize] to work
+
 var jwtSecret = builder.Configuration["JwtSecret"];
 if (string.IsNullOrWhiteSpace(jwtSecret))
 {

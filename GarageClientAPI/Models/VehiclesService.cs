@@ -11,7 +11,7 @@ public partial class VehiclesService
 
     public int Odometer { get; set; }
 
-    public string ServiceLocation { get; set; } = null!;
+    public string? ServiceLocation { get; set; } = null!;
 
     public string? Notes { get; set; }
 
