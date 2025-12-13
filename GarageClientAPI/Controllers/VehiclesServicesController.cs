@@ -151,6 +151,35 @@ namespace GarageClientAPI.Controllers
 
             return lastService;
         }
+        
+        // GET: api/VehiclesServices/vehicle/{vehicleId}/service-type/{serviceTypeId}/last
+        [HttpGet("vehicle/{vehicleId}/service-type/{serviceTypeId}/last")]
+        public async Task<ActionResult<VehiclesService>> GetLastVehiclesServiceByVehicleIdAndServiceType(
+            int vehicleId,
+            int serviceTypeId)
+        {
+            var lastService = await _context.VehiclesServices
+                // Filter by vehicleId and serviceTypeId through the join table
+                .Where(vs => vs.Vehicleid == vehicleId)
+                .Where(vs => vs.VehiclesServiceTypes.Any(vst => vst.ServiceTypeId == serviceTypeId))
+                // Include all necessary navigation properties
+                .Include(vs => vs.VehiclesServiceTypes)
+                    .ThenInclude(vst => vst.ServiceType)
+                .Include(vs => vs.VehiclesServiceTypes)
+                    .ThenInclude(vst => vst.Curr)
+                .Include(vs => vs.Garage)
+                .Include(vs => vs.Vehicle)
+                // Order by service date to get the most recent
+                .OrderByDescending(vs => vs.ServiceDate)
+                .FirstOrDefaultAsync();
+
+            if (lastService == null)
+            {
+                return NotFound($"No service found for vehicle ID {vehicleId} with service type ID {serviceTypeId}");
+            }
+
+            return lastService;
+        }
         private bool VehiclesServiceExists(int id)
         {
             return _context.VehiclesServices.Any(e => e.Id == id);
